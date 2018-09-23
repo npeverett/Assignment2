@@ -14,14 +14,16 @@ Classic::~Classic()
 {
   cout << "Classic Destructor Invoked" << endl;
   delete[] gameMapRef;
+  delete[] nextMap;
 }
 
-int Classic::hasNeighbor()
+void Classic::hasNeighbor()
 {
+  char nextMap[R][C];
   gameMapRef = &gameMap;
-  countLive = 0;
   for (int i=0; i < R; ++i){
     for (int j=0; j < C; ++j){
+      countLive = 0;
       if (gameMapRef[i-1][j-1] == "X"){
         countLive++;
       }
@@ -46,7 +48,25 @@ int Classic::hasNeighbor()
       if (gameMapRef[i+1][j] == "X"){
         countLive++;
       }
+
+      nextMap[i][j] = '-';
+
+      if (gameMap[i][j] == 'X' && countLive < 2)
+      {
+        nextMap[i][j] = '-';
+      }
+      else if (gameMap[i][j] == 'X' && countLive == 2)
+      {
+        nextMap[i][j] = 'X';
+      }
+      else if (gameMap[i][j] == 'X' && countLive == 3)
+      {
+        nextMap[i][j] = 'X';
+      }
+      else{
+        nextMap[i][j] = '-';
+      }
     }
   }
-  return countLive;
+  delete[] nextMap;
 }
