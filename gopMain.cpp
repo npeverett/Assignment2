@@ -1,11 +1,12 @@
 #include <iostream>
 #include "buildMap.h"
-
+#include "classic.h"
 using namespace std;
 
 int main()
 {
   BuildMap bm;
+  Classic c;
   int row;
   int column;
   string filename;
@@ -20,8 +21,8 @@ int main()
   if (toupper(answer) == 'Y'){
     cout << "Enter the file name: ";
     cin >> filename;
-    cout << bm.readMap(filename) << endl;
-    bm.createUserMap();
+    bm.readMap(filename);
+    cout << bm.createUserMap(filename) << endl;
   }
 
   else if (toupper(answer) == 'N'){
@@ -45,6 +46,7 @@ int main()
 
     bm.createNewMap(row, column);
     cout << bm.fillMap(popDensity) << endl;
+    cout << c.hasNeighbor() << endl;
   }
   else{
     cout << "Please only enter Y or N respectively" << endl;

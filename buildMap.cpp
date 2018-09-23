@@ -40,9 +40,8 @@ void BuildMap::createNewMap(const int rows, const int columns)
 //Method to fill map with X based on user input of density
 string BuildMap::fillMap(float populationDensity)
 {
-  string generationCycle;
   stringstream strStream;
-  int count = 0;
+  int gen = 0;
   int numCells = mapSize * populationDensity;   //set to int because can't have fractional number of cells
   int open = 0;
 
@@ -63,13 +62,13 @@ string BuildMap::fillMap(float populationDensity)
   }
   cout << endl;
 
-  strStream << "Current Generation: " << count;
+  strStream << "Current Generation: " << gen;
   generationCycle = strStream.str();
-  count++;
+  gen++;
   return generationCycle;
 }
 
-int BuildMap::readMap(string filename)
+void BuildMap::readMap(string filename)
 {
   stringstream strStream;
   string line = "";
@@ -98,19 +97,42 @@ int BuildMap::readMap(string filename)
       userColumns = line;
     }
   }
-  return 0;
+  fin.close();
+  fin.clear();
+  fin.seekg(0, fin.beg);
 }
 
-int BuildMap::createUserMap()
+string BuildMap::createUserMap(string filename)
 {
-  int userR = stoi(userRows);
-  int userC = stoi(userColumns);
-  createNewMap(userR, userC);
+  stringstream strStream;
+  fin.open(filename);
+  string line;
+  int gen = 0;
+  int count = 0;
+  R = stoi(userRows);
+  C = stoi(userColumns);
 
-  for (char& ch : userMap)
+  gameMap = new char*[R];
+  for (int i=0; i < R; ++i)
   {
-    if (ch == 'X')
-
+    gameMap[i] = new char[C];
   }
-  return 0;
+
+  while (count < 3){
+    getline(fin, line);
+    ++count;
+  }
+
+  for (int i=0; i < R; ++i){
+    for (int j=0; j < C; ++j){
+      fin >> gameMap[i][j];
+      cout << gameMap[i][j];
+    }
+    cout << endl;
+  }
+  cout << endl;
+  strStream << "Generation: " << gen;
+  generationCycle = strStream.str();
+  gen++;
+  return generationCycle;
 }

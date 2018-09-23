@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 
@@ -10,18 +11,18 @@ public:
   ~BuildMap();
   void createNewMap(const int rows, const int columns);
   string fillMap(float populationDensity);
-  int readMap(string filename);
-  int createUserMap();
+  void readMap(string filename);
+  string createUserMap(string filename);
 
   ifstream fin;
   ofstream fout;
-
-
-private:
   char** gameMap;
-  int mapSize;
   int R;
   int C;
+
+private:
+  int mapSize;
+  string generationCycle;
   string userRows;
   string userColumns;
   string userMap;
