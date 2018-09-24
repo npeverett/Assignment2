@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <cstring>
 #include "classic.h"
 #include "buildMap.h"
 
@@ -17,49 +18,68 @@ Classic::~Classic()
   delete[] nextMap;
 }
 
-void Classic::hasNeighbor()
+void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
 {
-  char nextMap[R][C];
-  gameMapRef = &gameMap;
-  for (int i=0; i < R; ++i){
-    for (int j=0; j < C; ++j){
+  nextMap = new char*[nextR];
+  for (int i=0; i < nextR; ++i)
+  {
+    nextMap[i] = new char[nextC];
+  }
+
+  gameMapRef = new char*[nextR];
+  for (int i=0; i < nextR; ++i){
+    gameMapRef[i] = new char[nextC];
+  }
+
+  memcpy(gameMapRef, currentMap, (sizeof(char *) * nextR * nextC));
+
+  for (int i=0; i < nextR; ++i){
+    for (int j=0; j < nextC; ++j){
       countLive = 0;
-      if (gameMapRef[i-1][j-1] == "X"){
+
+      if ((i-1 < 0) || (j-1 < 0)){
+        continue;
+      }
+      if ((i+1 > nextR || j+1 > nextC)){
+        continue;
+      }
+
+      if (gameMapRef[i-1][j-1] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i][j-1] == "X"){
+      if (gameMapRef[i][j-1] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i-1][j] == "X"){
+      if (gameMapRef[i-1][j] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i-1][j+1] == "X"){
+      if (gameMapRef[i-1][j+1] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i+1][j-1] == "X"){
+      if (gameMapRef[i+1][j-1] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i+1][j+1] == "X"){
+      if (gameMapRef[i+1][j+1] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i][j+1] == "X"){
+      if (gameMapRef[i][j+1] == 'X'){
         countLive++;
       }
-      if (gameMapRef[i+1][j] == "X"){
+      if (gameMapRef[i+1][j] == 'X'){
         countLive++;
       }
 
       nextMap[i][j] = '-';
 
-      if (gameMap[i][j] == 'X' && countLive < 2)
+      if (gameMapRef[i][j] == 'X' && countLive < 2)
       {
         nextMap[i][j] = '-';
       }
-      else if (gameMap[i][j] == 'X' && countLive == 2)
+      else if (gameMapRef[i][j] == 'X' && countLive == 2)
       {
         nextMap[i][j] = 'X';
       }
-      else if (gameMap[i][j] == 'X' && countLive == 3)
+      else if (gameMapRef[i][j] == 'X' && countLive == 3)
       {
         nextMap[i][j] = 'X';
       }
@@ -68,5 +88,4 @@ void Classic::hasNeighbor()
       }
     }
   }
-  delete[] nextMap;
 }

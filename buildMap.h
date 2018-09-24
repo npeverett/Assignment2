@@ -13,15 +13,19 @@ public:
   string fillMap(float populationDensity);
   void readMap(string filename);
   string createUserMap(string filename);
+  int getCurrentMapC();
+  int getCurrentMapR();
+  char** getMap();
 
   ifstream fin;
   ofstream fout;
-  char** gameMap;
-  int R;
-  int C;
+
 
 private:
   int mapSize;
+  char** gameMap;
+  int R;
+  int C;
   string generationCycle;
   string userRows;
   string userColumns;

@@ -136,3 +136,18 @@ string BuildMap::createUserMap(string filename)
   gen++;
   return generationCycle;
 }
+
+int BuildMap::getCurrentMapR()
+{
+  return R;
+}
+
+int BuildMap::getCurrentMapC()
+{
+  return C;
+}
+
+char** BuildMap::getMap()
+{
+  return gameMap;
+}

@@ -9,8 +9,9 @@ class Classic : public BuildMap{
 public:
   Classic();
   ~Classic();
-  int hasNeighbor();
-  char*** gameMapRef;
+  void hasNeighbor(const int nextR, const int nextC, char** currentMap);
+  char** gameMapRef;
+  char** nextMap;
 private:
   int countLive;
 };
