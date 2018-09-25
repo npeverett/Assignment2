@@ -13,6 +13,7 @@ int main()
   string gameMode;
   float popDensity;
   char answer;
+  char again;
 
   cout << "Game of Life" << endl;
   cout << "Would you like to provide a map file? Y/N" << endl;
@@ -20,6 +21,7 @@ int main()
 
   cout << " " << endl;
   cout << "Which gamemode would you like to play?" << endl;
+  cout << " " << endl;
   cout << "Classic: All locations off grid are considered empty." << endl;
   cout << "Donut:   Grid is wrapped horizontally and vertically." << endl;
   cout << "Mirror:  References off the grid are bounced back as if wall is mirror." << endl;
@@ -30,7 +32,7 @@ int main()
     cout << "Enter the file name: ";
     cin >> filename;
     bm.readMap(filename);
-    cout << bm.createUserMap(filename) << endl;
+    bm.createUserMap(filename);
   }
 
   else if (toupper(answer) == 'N'){
@@ -54,16 +56,23 @@ int main()
     }
 
     bm.createNewMap(row, column);
-    cout << bm.fillMap(popDensity) << endl;
-    int row2 = bm.getCurrentMapC();
-    int column2 = bm.getCurrentMapR();
+    bm.fillMap(popDensity);
+    int row2 = bm.getCurrentMapR();
+    int column2 = bm.getCurrentMapC();
     char** mapRef = bm.getMap();
-    c.hasNeighbor(row2, column2, mapRef);
+    cout << c.hasNeighbor(row2, column2, mapRef) << endl;
+    cout << "Press Enter to see next generation" << endl;
+    cin.get();
+    while(cin.get() == '\n'){
+      char** temp = c.getNextMap();
+      cout << c.hasNeighbor(row2, column2, temp) << endl;
+      cout << "Press Enter to see next generation" << endl;
+      cin.get();
+    }
   }
   else{
     cout << "Please only enter Y or N respectively" << endl;
     return 0;
   }
-
   return 0;
 }

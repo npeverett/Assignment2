@@ -10,9 +10,9 @@ public:
   BuildMap();
   ~BuildMap();
   void createNewMap(const int rows, const int columns);
-  string fillMap(float populationDensity);
+  void fillMap(float populationDensity);
   void readMap(string filename);
-  string createUserMap(string filename);
+  void createUserMap(string filename);
   int getCurrentMapC();
   int getCurrentMapR();
   char** getMap();
@@ -26,9 +26,7 @@ private:
   char** gameMap;
   int R;
   int C;
-  string generationCycle;
   string userRows;
   string userColumns;
-  string userMap;
 
 };

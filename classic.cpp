@@ -13,79 +13,198 @@ Classic::Classic()
 
 Classic::~Classic()
 {
-  cout << "Classic Destructor Invoked" << endl;
-  delete[] gameMapRef;
+  for(int i=0; i < BuildMap::getCurrentMapR(); ++i)
+  {
+    delete[] nextMap[i];
+  }
   delete[] nextMap;
+  cout << "Classic Destructor Invoked" << endl;
 }
 
-void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
+string Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
 {
+  int gen = 0;
+  stringstream strStream;
+
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
     nextMap[i] = new char[nextC];
   }
 
-  gameMapRef = new char*[nextR];
-  for (int i=0; i < nextR; ++i){
-    gameMapRef[i] = new char[nextC];
-  }
-
-  memcpy(gameMapRef, currentMap, (sizeof(char *) * nextR * nextC));
-
   for (int i=0; i < nextR; ++i){
     for (int j=0; j < nextC; ++j){
       countLive = 0;
+      if (i == 0 && j == 0){             //top left corner
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j+1] == 'X'){
+          countLive++;
+        }
+      }
+      else if (i == nextR-1 && j == 0){  //bottom left corner
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j] == 'X'){
+          countLive++;
+        }
+      }
+      else if (j == nextC-1 && i == 0){  //top right corner
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j-1] == 'X'){
+          countLive++;
+        }
+      }
+      else if (i == nextR-1 && j == nextC-1){  //bottom right corner
+        if (currentMap[i-1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+      }
+      else if (i == nextR-1){          //bottom row
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
+      }
+      else if (j == 0){                 //left column
+        if (currentMap[i-1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+      }
+      else if (i == 0){                 //top row
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
+      }
+      else if (j == nextC-1){           //right column
+        if (currentMap[i-1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+      }
+      else{                            //all spaces inbetween
+        if (currentMap[i-1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i-1][j+1] == 'X'){
+        countLive++;
+        }
+        if (currentMap[i+1][j-1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+      }
 
-      if ((i-1 < 0) || (j-1 < 0)){
-        continue;
-      }
-      if ((i+1 > nextR || j+1 > nextC)){
-        continue;
-      }
+      nextMap[i][j] = '-';      //initialize spot to -
 
-      if (gameMapRef[i-1][j-1] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i][j-1] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i-1][j] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i-1][j+1] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i+1][j-1] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i+1][j+1] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i][j+1] == 'X'){
-        countLive++;
-      }
-      if (gameMapRef[i+1][j] == 'X'){
-        countLive++;
-      }
-
-      nextMap[i][j] = '-';
-
-      if (gameMapRef[i][j] == 'X' && countLive < 2)
+      //Dead or Alive?
+      if (currentMap[i][j] == 'X' && countLive < 2) // < 2, die
       {
         nextMap[i][j] = '-';
       }
-      else if (gameMapRef[i][j] == 'X' && countLive == 2)
+      else if (currentMap[i][j] == 'X' && countLive == 2) // == 2, live
       {
         nextMap[i][j] = 'X';
       }
-      else if (gameMapRef[i][j] == 'X' && countLive == 3)
+      else if (currentMap[i][j] == 'X' && countLive == 3) // ==3, live
       {
         nextMap[i][j] = 'X';
       }
-      else{
+      else{                                             // > 3, die
         nextMap[i][j] = '-';
       }
+      cout << nextMap[i][j] << " ";
     }
+    cout << endl;
   }
+  cout << endl;
+  memcpy(currentMap, nextMap, (sizeof(char *) * nextR * nextC));
+  strStream << "Current Generation: " << gen;
+  generationCycle = strStream.str();
+  gen++;
+  return generationCycle;
+}
+
+char** Classic::getNextMap()
+{
+  return nextMap;
 }
