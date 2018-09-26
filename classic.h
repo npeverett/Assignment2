@@ -9,11 +9,12 @@ class Classic : public BuildMap{
 public:
   Classic();
   ~Classic();
-  string hasNeighbor(const int nextR, const int nextC, char** currentMap);
+  void hasNeighbor(const int nextR, const int nextC, char** currentMap);
   char** getNextMap();
+  void deadEnvironment();
 
 private:
+  int totalAlive;
   int countLive;
-  string generationCycle;
   char** nextMap;
 };

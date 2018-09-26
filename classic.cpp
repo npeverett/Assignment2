@@ -21,11 +21,10 @@ Classic::~Classic()
   cout << "Classic Destructor Invoked" << endl;
 }
 
-string Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
+void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
 {
-  int gen = 0;
+  totalAlive = 0;
   stringstream strStream;
-
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
@@ -184,10 +183,12 @@ string Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
       else if (currentMap[i][j] == 'X' && countLive == 2) // == 2, live
       {
         nextMap[i][j] = 'X';
+        totalAlive++;
       }
-      else if (currentMap[i][j] == 'X' && countLive == 3) // ==3, live
+      else if (countLive == 3) // ==3, live
       {
         nextMap[i][j] = 'X';
+        totalAlive++;
       }
       else{                                             // > 3, die
         nextMap[i][j] = '-';
@@ -197,14 +198,18 @@ string Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
     cout << endl;
   }
   cout << endl;
-  memcpy(currentMap, nextMap, (sizeof(char *) * nextR * nextC));
-  strStream << "Current Generation: " << gen;
-  generationCycle = strStream.str();
-  gen++;
-  return generationCycle;
+  //memcpy(currentMap, nextMap, (sizeof(char *) * nextR * nextC));
 }
 
 char** Classic::getNextMap()
 {
   return nextMap;
+}
+
+void Classic::deadEnvironment()
+{
+  if (totalAlive == 0){
+    cout << "Looks like your cells have all died out. System exiting..." << endl;
+    exit(0);
+  }
 }

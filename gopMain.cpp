@@ -5,37 +5,57 @@ using namespace std;
 
 int main()
 {
+  //Global Variables
   BuildMap bm;
   Classic c;
   int row;
   int column;
   string filename;
-  string gameMode;
+  char gameMode;
   float popDensity;
   char answer;
   char again;
+  int gen = 0;
 
+  //Introduction to Game
+  cout << " " << endl;
   cout << "Game of Life" << endl;
   cout << "Would you like to provide a map file? Y/N" << endl;
   cin >> answer;
+  answer = toupper(answer);
+  //If User Inputs Char Other Than Y or N
+  if (answer != 'Y' && answer != 'N'){
+    cout << "Please only enter Y or N respectively" << endl;
+    exit(0);
+  }
 
+  //Which Game Mode?
   cout << " " << endl;
-  cout << "Which gamemode would you like to play?" << endl;
+  cout << "Which gamemode would you like to play? (C,D,M)" << endl;
   cout << " " << endl;
   cout << "Classic: All locations off grid are considered empty." << endl;
   cout << "Donut:   Grid is wrapped horizontally and vertically." << endl;
   cout << "Mirror:  References off the grid are bounced back as if wall is mirror." << endl;
   cin >> gameMode;
+  gameMode = toupper(gameMode);
   cout << " " << endl;
+  //If User Inputs Char Other Than Game Mode Type
+  if (gameMode != 'C' && gameMode != 'D' && gameMode != 'M' ){
+    cout << "Please enter a character respective to your game mode choice." << endl;
+    exit(0);
+  }
 
-  if (toupper(answer) == 'Y'){
+
+  //Asking for File Name
+  if (answer == 'Y'){
     cout << "Enter the file name: ";
     cin >> filename;
     bm.readMap(filename);
     bm.createUserMap(filename);
   }
 
-  else if (toupper(answer) == 'N'){
+  //User Decides to Create Own Map
+  else if (answer == 'N'){
     cout << "Enter number of rows: ";
     cin >> row;
     cout << "Enter number of columns: ";
@@ -45,6 +65,7 @@ int main()
     cin >> popDensity;
     cout << " " << endl;
 
+    //Checks to Make Sure Input is a float AND within 0-1 range
     if (cin.fail()){
       cout << "Please enter a float between 0 and 1" << endl;
       exit(0);
@@ -55,24 +76,42 @@ int main()
       exit(0);
     }
 
+    //Instantiate Initial Map
     bm.createNewMap(row, column);
     bm.fillMap(popDensity);
-    int row2 = bm.getCurrentMapR();
-    int column2 = bm.getCurrentMapC();
-    char** mapRef = bm.getMap();
-    cout << c.hasNeighbor(row2, column2, mapRef) << endl;
-    cout << "Press Enter to see next generation" << endl;
-    cin.get();
-    while(cin.get() == '\n'){
-      char** temp = c.getNextMap();
-      cout << c.hasNeighbor(row2, column2, temp) << endl;
+    cout << "Current Generation: " << 0 << endl;
+    cout << "Press Backspace to stop program" << endl;
+    cout << " " << endl;
+
+    //If User Chooses Classic Mode
+    if (gameMode == 'C')
+    {
+      int row2 = bm.getCurrentMapR();
+      int column2 = bm.getCurrentMapC();
+      char** mapRef = bm.getMap();
+      c.hasNeighbor(row2, column2, mapRef);
+      gen++;
+      cout << "Current Generation: " << gen << endl;
       cout << "Press Enter to see next generation" << endl;
       cin.get();
+      while(cin.get() == ('\n')){
+        char** temp = c.getNextMap();
+        c.hasNeighbor(row2, column2, temp);
+        gen++;
+        cout << "Current Generation: " << gen << endl;
+        c.deadEnvironment();
+        cout << "Press Enter to see next generation" << endl;
+      }
+    }
+    else if (gameMode == 'D')
+    {
+      cout << "This game mode has not been developed yet." << endl;
+    }
+    else if (gameMode == 'M')
+    {
+      cout << "This game mode has not been developed yet." << endl;
     }
   }
-  else{
-    cout << "Please only enter Y or N respectively" << endl;
-    return 0;
-  }
+
   return 0;
 }
