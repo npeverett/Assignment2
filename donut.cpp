@@ -1,4 +1,4 @@
-/*#include <iostream>
+#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <cstring>
@@ -22,6 +22,7 @@ Donut::~Donut()
 
 void Donut::donutNeighbors(const int nextR, const int nextC, char** currentMap)
 {
+  totalAlive = 0;
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
@@ -31,63 +32,125 @@ void Donut::donutNeighbors(const int nextR, const int nextC, char** currentMap)
   for (int i=0; i < nextR; ++i){
     for (int j=0; j < nextC; ++j){
       countLive = 0;
-      if (i == 0 && j == 0){             //top left corner  can't evaluate any i-1 or j-1
-        if (currentMap[i][j+1] == 'X'){
+      //Same Checking as Classic Mode
+      if (i-1 >= 0 && j-1 >= 0){
+        if (currentMap[i-1][j-1]){
           countLive++;
         }
-        if (currentMap[i+1][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+(nextR-1)][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+(nextR-1)][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j+(nextC-1)] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j+(nextC-1)] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+(nextR-1)][j+(nextC-1)] == 'X'){
-          countLive++;
-        }
-
-      else if (i == nextR-1 && j == 0){  //bottom left corner  can't evaluate any i+1
-      {
+      }
+      if (i-1 >= 0){
         if (currentMap[i-1][j] == 'X'){
           countLive++;
         }
+      }
+      if (i-1 >= 0 && j+1 < nextC){
         if (currentMap[i-1][j+1] == 'X'){
           countLive++;
         }
+      }
+      if (j-1 >= 0){
+        if (currentMap[i][j-1] == 'X'){
+          countLive++;
+        }
+      }
+      if (j+1 < nextC){
         if (currentMap[i][j+1] == 'X'){
           countLive++;
         }
-        if (currentMap[i-(nextR-1)][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-(nextR-1)][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-(nextR-1)][j+(nextC-1)] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j+(nextC-1)] == 'X'){
-          countLive++;
-        }
-
       }
-      else if (j == nextC-1 && i == 0){}  //top right corner
-      else if (i == nextR-1 && j == nextC-1){}  //bottom right corner
-      else if (i == nextR-1){}          //bottom row
-      else if (j == 0){}                 //left column
-      else if (i == 0){}                 //top row
-      else if (j == nextC-1){}           //right column
-      else{}                            //all spaces inbetween
+      if (i+1 < nextR && j-1 >= 0){
+        if (currentMap[i+1][j-1] == 'X'){
+          countLive++;
+        }
+      }
+      if (i+1 < nextR){
+        if (currentMap[i+1][j] == 'X'){
+          countLive++;
+        }
+      }
+      if (i+1 < nextR && j+1 < nextC){
+        if (currentMap[i+1][j+1] == 'X'){
+          countLive++;
+        }
+      }
+      //New Checking for Donut
+      if (i-1 < 0 && j-1 < 0){
+        if (currentMap[nextR-1][nextC-1] == 'X'){
+          countLive++;
+        }
+      }
+      if (i-1 < 0){
+        if (currentMap[nextR-1][j] == 'X'){
+          countLive++;
+        }
+      }
+      if (j-1 < 0){
+        if (currentMap[i][nextC-1] == 'X'){
+          countLive++;
+        }
+      }
+      if (j+1 == nextC){
+        if (currentMap[i][0] == 'X'){
+          countLive++;
+        }
+      }
+      if (i+1 == nextR){
+        if (currentMap[0][j] == 'X'){
+          countLive++;
+        }
+      }
+      if (i-1 < 0 && j+1 == nextC){
+        if (currentMap[nextR-1][0] == 'X'){
+          countLive++;
+        }
+      }
+      if (i+1 == nextR && j-1 < 0){
+        if (currentMap[0][nextC-1] == 'X'){
+          countLive++;
+        }
+      }
+      if (i+1 == nextR && j+1 == nextC){
+        if (currentMap[0][0] == 'X'){
+          countLive++;
+        }
+      }
+
+      nextMap[i][j] = '-';      //initialize spot to -
+      //cout << i << "," << j << " " << countLive << endl;
+      //Dead or Alive?
+      if (currentMap[i][j] == 'X' && countLive < 2) // < 2, die
+      {
+        nextMap[i][j] = '-';
+      }
+      else if (currentMap[i][j] == 'X' && countLive == 2) // == 2, live
+      {
+        nextMap[i][j] = 'X';
+        totalAlive++;
+      }
+      else if (countLive == 3) // ==3, live
+      {
+        nextMap[i][j] = 'X';
+        totalAlive++;
+      }
+      else{                                             // > 3, die
+        nextMap[i][j] = '-';
+      }
+      cout << nextMap[i][j] << " ";
+    }
+    cout << endl;
+  }
+  cout << endl;
 }
-*/
+
+char** Donut::getNextMap()
+{
+  return nextMap;
+}
+
+void Donut::deadEnvironment()
+{
+  if (totalAlive == 0){
+    cout << "Looks like your cells have all died out. System exiting..." << endl;
+    exit(0);
+  }
+}

@@ -34,141 +34,43 @@ void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
   for (int i=0; i < nextR; ++i){
     for (int j=0; j < nextC; ++j){
       countLive = 0;
-      if (i == 0 && j == 0){             //top left corner
-        if (currentMap[i][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j+1] == 'X'){
+      if (i-1 >= 0 && j-1 >= 0){
+        if (currentMap[i-1][j-1]){
           countLive++;
         }
       }
-      else if (i == nextR-1 && j == 0){  //bottom left corner
-        if (currentMap[i][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j+1] == 'X'){
-          countLive++;
-        }
+      if (i-1 >= 0){
         if (currentMap[i-1][j] == 'X'){
           countLive++;
         }
       }
-      else if (j == nextC-1 && i == 0){  //top right corner
+      if (i-1 >= 0 && j+1 < nextC){
+        if (currentMap[i-1][j+1] == 'X'){
+          countLive++;
+        }
+      }
+      if (j-1 >= 0){
         if (currentMap[i][j-1] == 'X'){
           countLive++;
         }
-        if (currentMap[i+1][j] == 'X'){
+      }
+      if (j+1 < nextC){
+        if (currentMap[i][j+1] == 'X'){
           countLive++;
         }
+      }
+      if (i+1 < nextR && j-1 >= 0){
         if (currentMap[i+1][j-1] == 'X'){
           countLive++;
         }
       }
-      else if (i == nextR-1 && j == nextC-1){  //bottom right corner
-        if (currentMap[i-1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j-1] == 'X'){
+      if (i+1 < nextR){
+        if (currentMap[i+1][j] == 'X'){
           countLive++;
         }
       }
-      else if (i == nextR-1){          //bottom row
-        if (currentMap[i][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j+1] == 'X'){
-          countLive++;
-        }
-      }
-      else if (j == 0){                 //left column
-        if (currentMap[i-1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j+1] == 'X'){
-          countLive++;
-        }
+      if (i+1 < nextR && j+1 < nextC){
         if (currentMap[i+1][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j] == 'X'){
-          countLive++;
-        }
-      }
-      else if (i == 0){                 //top row
-        if (currentMap[i][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j+1] == 'X'){
-          countLive++;
-        }
-      }
-      else if (j == nextC-1){           //right column
-        if (currentMap[i-1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j] == 'X'){
-          countLive++;
-        }
-      }
-      else{                            //all spaces inbetween
-        if (currentMap[i-1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i-1][j+1] == 'X'){
-        countLive++;
-        }
-        if (currentMap[i+1][j-1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i][j+1] == 'X'){
-          countLive++;
-        }
-        if (currentMap[i+1][j] == 'X'){
           countLive++;
         }
       }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "buildMap.h"
 #include "classic.h"
+#include "donut.h"
 using namespace std;
 
 int main()
@@ -8,6 +9,7 @@ int main()
   //Global Variables
   BuildMap bm;
   Classic c;
+  Donut d;
   int row;
   int column;
   string filename;
@@ -80,7 +82,7 @@ int main()
     bm.createNewMap(row, column);
     bm.fillMap(popDensity);
     cout << "Current Generation: " << 0 << endl;
-    cout << "Press Backspace to stop program" << endl;
+    cout << "Press X to stop program" << endl;
     cout << " " << endl;
 
     //If User Chooses Classic Mode
@@ -93,19 +95,52 @@ int main()
       gen++;
       cout << "Current Generation: " << gen << endl;
       cout << "Press Enter to see next generation" << endl;
-      cin.get();
-      while(cin.get() == ('\n')){
+      again = cin.get();
+      while(again == ('\n')){
         char** temp = c.getNextMap();
         c.hasNeighbor(row2, column2, temp);
         gen++;
         cout << "Current Generation: " << gen << endl;
         c.deadEnvironment();
         cout << "Press Enter to see next generation" << endl;
+        again = cin.get();
+        if (again == 'x'){
+          return 0;
+        }
+        else if (again != '\n'){
+          cout << "Press Enter to Continue, or 'X' to exit" << endl;
+          again = cin.get();
+        }
       }
     }
+
+    //If User Chooses Donut Mode
     else if (gameMode == 'D')
     {
-      cout << "This game mode has not been developed yet." << endl;
+      int row2 = bm.getCurrentMapR();
+      int column2 = bm.getCurrentMapC();
+      char** mapRef = bm.getMap();
+      d.donutNeighbors(row2, column2, mapRef);
+      gen++;
+      cout << "Current Generation: " << gen << endl;
+      cout << "Press Enter to see next generation" << endl;
+      again = cin.get();
+      while(again == ('\n')){
+        char** temp = d.getNextMap();
+        d.donutNeighbors(row2, column2, temp);
+        gen++;
+        cout << "Current Generation: " << gen << endl;
+        d.deadEnvironment();
+        cout << "Press Enter to see next generation" << endl;
+        again = cin.get();
+        if (again == 'x'){
+          return 0;
+        }
+        else if (again != '\n'){
+          cout << "Press Enter to Continue, or 'X' to exit" << endl;
+          again = cin.get();
+        }
+      }
     }
     else if (gameMode == 'M')
     {
