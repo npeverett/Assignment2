@@ -3,18 +3,17 @@
 #include <fstream>
 #include "buildMap.h"
 
-using namespace std;
-
-class Donut : public BuildMap
+class Mirror : public BuildMap
 {
 public:
-  Donut();
-  ~Donut();
-  void donutNeighbors(const int nextR, const int nextC, char** currentMap);
+  Mirror();
+  ~Mirror();
+  void mirrorNeighbors(const int nextR, const int nextC, char** currentMap);
   char** getNextMap();
   void deadEnvironment();
 private:
   int totalAlive;
   int countLive;
   char** nextMap;
+
 };

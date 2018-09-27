@@ -2,6 +2,7 @@
 #include "buildMap.h"
 #include "classic.h"
 #include "donut.h"
+#include "mirror.h"
 using namespace std;
 
 int main()
@@ -10,6 +11,7 @@ int main()
   BuildMap bm;
   Classic c;
   Donut d;
+  Mirror m;
   int row;
   int column;
   string filename;
@@ -144,7 +146,30 @@ int main()
     }
     else if (gameMode == 'M')
     {
-      cout << "This game mode has not been developed yet." << endl;
+      int row2 = bm.getCurrentMapR();
+      int column2 = bm.getCurrentMapC();
+      char** mapRef = bm.getMap();
+      c.hasNeighbor(row2, column2, mapRef);
+      gen++;
+      cout << "Current Generation: " << gen << endl;
+      cout << "Press Enter to see next generation" << endl;
+      again = cin.get();
+      while(again == ('\n')){
+        char** temp = c.getNextMap();
+        c.hasNeighbor(row2, column2, temp);
+        gen++;
+        cout << "Current Generation: " << gen << endl;
+        c.deadEnvironment();
+        cout << "Press Enter to see next generation" << endl;
+        again = cin.get();
+        if (again == 'x'){
+          return 0;
+        }
+        else if (again != '\n'){
+          cout << "Press Enter to Continue, or 'X' to exit" << endl;
+          again = cin.get();
+        }
+      }
     }
   }
 
