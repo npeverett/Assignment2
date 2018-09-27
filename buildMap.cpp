@@ -115,8 +115,8 @@ void BuildMap::createUserMap(string filename)
     ++count;
   }
 
-  for (int i=0; i < R - 1; ++i){
-    for (int j=0; j < C - 1; ++j){
+  for (int i=0; i < R; ++i){
+    for (int j=0; j < C; ++j){
       fin >> gameMap[i][j];
       cout << gameMap[i][j];
     }

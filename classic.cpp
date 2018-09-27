@@ -13,15 +13,16 @@ Classic::Classic()
 
 Classic::~Classic()
 {
-  for(int i=0; i < BuildMap::getCurrentMapR(); ++i){
+  for (int i=0; i < BuildMap::getCurrentMapR(); ++i){
     delete[] nextMap[i];
   }
   delete[] nextMap;
-  cout << "Classic Destructor Invoked" << endl;
+  cout << "Classic Destroyed" << endl;
 }
 
 void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
 {
+  isStable = true;
   totalAlive = 0;
   stringstream strStream;
   nextMap = new char*[nextR];
@@ -94,12 +95,18 @@ void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
       else{                                             // > 3, die
         nextMap[i][j] = '-';
       }
+
+      //Checking if Map Stabilizes
+      if (currentMap[i][j] != nextMap[i][j]){
+        isStable = false;
+      }
+
+      //Printing New Generation
       cout << nextMap[i][j] << " ";
     }
     cout << endl;
   }
   cout << endl;
-  //memcpy(currentMap, nextMap, (sizeof(char *) * nextR * nextC));
 }
 
 char** Classic::getNextMap()
@@ -112,5 +119,28 @@ void Classic::deadEnvironment()
   if (totalAlive == 0){
     cout << "Looks like your cells have all died out. System exiting..." << endl;
     exit(0);
+  }
+}
+
+void Classic::Stabilized()
+{
+  if (isStable){
+    cout << "Looks like your cells have stabilized. System exiting..." << endl;
+    exit(0);
+  }
+}
+
+void Classic::outputMap(bool output, string filename, const int nextR, const int nextC)
+{
+  ofstream fout;
+  fout.open(filename, ios_base::app);
+  if (output){
+    for (int i=0; i < nextR; ++i){
+      for (int j=0; j < nextC; ++j){
+        fout << nextMap[i][j] << " ";
+      }
+      fout << endl;
+    }
+    fout << endl;
   }
 }

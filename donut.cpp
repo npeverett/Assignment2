@@ -177,6 +177,13 @@ void Donut::donutNeighbors(const int nextR, const int nextC, char** currentMap)
       else{                                             // > 3, die
         nextMap[i][j] = '-';
       }
+
+      //Checking if Map Stabilizes
+      if (currentMap[i][j] != nextMap[i][j]){
+        isStable = false;
+      }
+
+      //Printing New Generation
       cout << nextMap[i][j] << " ";
     }
     cout << endl;
@@ -195,5 +202,30 @@ void Donut::deadEnvironment()
   if (totalAlive == 0){
     cout << "Looks like your cells have all died out. System exiting..." << endl;
     exit(0);
+  }
+}
+
+//Method to Print If Generations Have Stabilized
+void Donut::Stabilized()
+{
+  if (isStable){
+    cout << "Looks like your cells have stabilized. System exiting..." << endl;
+    exit(0);
+  }
+}
+
+//Method To Print Generations To Output File
+void Donut::outputMap(bool output, string filename, const int nextR, const int nextC)
+{
+  ofstream fout;
+  fout.open(filename, ios_base::app);
+  if (output){
+    for (int i=0; i < nextR; ++i){
+      for (int j=0; j < nextC; ++j){
+        fout << nextMap[i][j] << " ";
+      }
+      fout << endl;
+    }
+    fout << endl;
   }
 }

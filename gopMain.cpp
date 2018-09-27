@@ -12,12 +12,16 @@ int main()
   Classic c;
   Donut d;
   Mirror m;
+  string filenameINPUT;
+  string filenameOUTPUT;
+  char answerINPUT;
+  char answerOUTPUT;
+  bool outputToFile = false;
+  ofstream fout;
   int row;
   int column;
-  string filename;
   char gameMode;
   float popDensity;
-  char answer;
   char again;
   int gen = 0;
 
@@ -25,12 +29,29 @@ int main()
   cout << " " << endl;
   cout << "Game of Life" << endl;
   cout << "Would you like to provide a map file? Y/N" << endl;
-  cin >> answer;
-  answer = toupper(answer);
+  cin >> answerINPUT;
+  answerINPUT = toupper(answerINPUT);
+
   //If User Inputs Char Other Than Y or N
-  if (answer != 'Y' && answer != 'N'){
+  if (answerINPUT != 'Y' && answerINPUT != 'N'){
     cout << "Please only enter Y or N respectively" << endl;
     exit(0);
+  }
+
+  //If User Would Like Output Into A File
+  cout << " " << endl;
+  cout << "Would you like the generation maps to be outputted to a file? Y/N" << endl;
+  cin >> answerOUTPUT;
+  answerOUTPUT = toupper(answerOUTPUT);
+  if (answerOUTPUT != 'Y' && answerOUTPUT != 'N'){
+    cout << "Please only enter Y or N respectively" << endl;
+    exit(0);
+  }
+  if (answerOUTPUT == 'Y'){
+    outputToFile = true;
+    cout << "Enter the output file name: ";
+    cin >> filenameOUTPUT;
+    fout.open(filenameOUTPUT);
   }
 
   //Which Game Mode?
@@ -51,15 +72,15 @@ int main()
 
 
   //Asking for File Name
-  if (answer == 'Y'){
+  if (answerINPUT == 'Y'){
     cout << "Enter the file name: ";
-    cin >> filename;
-    bm.readMap(filename);
-    bm.createUserMap(filename);
+    cin >> filenameINPUT;
+    bm.readMap(filenameINPUT);
+    bm.createUserMap(filenameINPUT);
   }
 
   //User Decides to Create Own Map
-  else if (answer == 'N'){
+  else if (answerINPUT == 'N'){
     cout << "Enter number of rows: ";
     cin >> row;
     cout << "Enter number of columns: ";
@@ -86,7 +107,7 @@ int main()
     cout << "Current Generation: " << 0 << endl;
     cout << "Press X to stop program" << endl;
     cout << " " << endl;
-
+  }
     //If User Chooses Classic Mode
     if (gameMode == 'C')
     {
@@ -94,24 +115,24 @@ int main()
       int column2 = bm.getCurrentMapC();
       char** mapRef = bm.getMap();
       c.hasNeighbor(row2, column2, mapRef);
+      c.outputMap(outputToFile, filenameOUTPUT, row2, column2);
       gen++;
       cout << "Current Generation: " << gen << endl;
-      cout << "Press Enter to see next generation" << endl;
+      cout << "Press Enter to see next generation, or X to exit" << endl;
       again = cin.get();
       while(again == ('\n')){
         char** temp = c.getNextMap();
         c.hasNeighbor(row2, column2, temp);
+        c.outputMap(outputToFile, filenameOUTPUT, row2, column2);
         gen++;
         cout << "Current Generation: " << gen << endl;
         c.deadEnvironment();
-        cout << "Press Enter to see next generation" << endl;
+        c.Stabilized();
+        cout << "Press Enter to see next generation, or X to exit" << endl;
         again = cin.get();
         if (again == 'x'){
-          return 0;
-        }
-        else if (again != '\n'){
-          cout << "Press Enter to Continue, or 'X' to exit" << endl;
-          again = cin.get();
+          cout << "Exiting..." << endl;
+          exit(0);
         }
       }
     }
@@ -123,24 +144,27 @@ int main()
       int column2 = bm.getCurrentMapC();
       char** mapRef = bm.getMap();
       d.donutNeighbors(row2, column2, mapRef);
+      d.outputMap(outputToFile, filenameOUTPUT, row2, column2);
       gen++;
       cout << "Current Generation: " << gen << endl;
-      cout << "Press Enter to see next generation" << endl;
+      cout << "Press Enter to see next generation, or X to exit" << endl;
       again = cin.get();
       while(again == ('\n')){
         char** temp = d.getNextMap();
         d.donutNeighbors(row2, column2, temp);
+        d.outputMap(outputToFile, filenameOUTPUT, row2, column2);
         gen++;
         cout << "Current Generation: " << gen << endl;
         d.deadEnvironment();
-        cout << "Press Enter to see next generation" << endl;
+        cout << "Press Enter to see next generation, or X to exit" << endl;
         again = cin.get();
         if (again == 'x'){
+          cout << "Exiting..." << endl;
           return 0;
         }
         else if (again != '\n'){
           cout << "Press Enter to Continue, or 'X' to exit" << endl;
-          again = cin.get();
+          cin >> again;
         }
       }
     }
@@ -149,29 +173,30 @@ int main()
       int row2 = bm.getCurrentMapR();
       int column2 = bm.getCurrentMapC();
       char** mapRef = bm.getMap();
-      c.hasNeighbor(row2, column2, mapRef);
+      m.mirrorNeighbors(row2, column2, mapRef);
+      m.outputMap(outputToFile, filenameOUTPUT, row2, column2);
       gen++;
       cout << "Current Generation: " << gen << endl;
-      cout << "Press Enter to see next generation" << endl;
+      cout << "Press Enter to see next generation, or X to exit" << endl;
       again = cin.get();
       while(again == ('\n')){
         char** temp = c.getNextMap();
-        c.hasNeighbor(row2, column2, temp);
+        m.mirrorNeighbors(row2, column2, temp);
+        m.outputMap(outputToFile, filenameOUTPUT, row2, column2);
         gen++;
         cout << "Current Generation: " << gen << endl;
-        c.deadEnvironment();
-        cout << "Press Enter to see next generation" << endl;
+        m.deadEnvironment();
+        cout << "Press Enter to see next generation, or X to exit" << endl;
         again = cin.get();
         if (again == 'x'){
-          return 0;
+          cout << "Exiting..." << endl;
+          exit(0);
         }
         else if (again != '\n'){
           cout << "Press Enter to Continue, or 'X' to exit" << endl;
-          again = cin.get();
+          cin >> again;
         }
       }
     }
-  }
-
   return 0;
 }
