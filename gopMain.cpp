@@ -156,6 +156,7 @@ int main()
         gen++;
         cout << "Current Generation: " << gen << endl;
         d.deadEnvironment();
+        d.Stabilized();
         cout << "Press Enter to see next generation, or X to exit" << endl;
         again = cin.get();
         if (again == 'x'){
@@ -180,7 +181,7 @@ int main()
       cout << "Press Enter to see next generation, or X to exit" << endl;
       again = cin.get();
       while(again == ('\n')){
-        char** temp = c.getNextMap();
+        char** temp = m.getNextMap();
         m.mirrorNeighbors(row2, column2, temp);
         m.outputMap(outputToFile, filenameOUTPUT, row2, column2);
         gen++;

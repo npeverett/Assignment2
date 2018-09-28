@@ -124,7 +124,7 @@ void Mirror::mirrorNeighbors(const int nextR, const int nextC, char** currentMap
           countLive = countLive + 3;
         }
       }
-
+      //cout << i << "," << j << " " << countLive << endl;
        //Initialize Spot To -
       nextMap[i][j] = '-';
 
@@ -151,7 +151,6 @@ void Mirror::mirrorNeighbors(const int nextR, const int nextC, char** currentMap
       if (currentMap[i][j] != nextMap[i][j]){
         isStable = false;
       }
-
       //Printing New Generation
       cout << nextMap[i][j] << " ";
     }
