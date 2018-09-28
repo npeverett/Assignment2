@@ -187,6 +187,7 @@ int main()
         gen++;
         cout << "Current Generation: " << gen << endl;
         m.deadEnvironment();
+        m.Stabilized();
         cout << "Press Enter to see next generation, or X to exit" << endl;
         again = cin.get();
         if (again == 'x'){

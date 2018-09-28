@@ -23,6 +23,8 @@ Mirror::~Mirror()
 void Mirror::mirrorNeighbors(const int nextR, const int nextC, char** currentMap)
 {
   totalAlive = 0;
+  isStable = true;
+  bool isAlive = false;
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
@@ -33,98 +35,233 @@ void Mirror::mirrorNeighbors(const int nextR, const int nextC, char** currentMap
     for (int j=0; j < nextC; ++j){
       countLive = 0;
 
-      //Same Checking as Classic Mode
-      if (i-1 >= 0 && j-1 >= 0){
-        if (currentMap[i-1][j-1]){
+      //New Checking For Mirror Mode (Some Still Same Checks As Classic)
+      if (i == 0 && j == 0){      //top left corner
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 3;
+        }
+        if (currentMap[i][j+1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i+1][j+1] == 'X' && isAlive == false){
           countLive++;
         }
       }
-      if (i-1 >= 0){
+      else if (i == nextR-1 && j == 0){ //bottom left corner
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 3;
+        }
+        if (currentMap[i][j+1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i-1][j] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i-1][j+1] == 'X' && isAlive == false){
+          countLive++;
+        }
+      }
+      else if (i == 0 && j == nextC-1){  //top right corner
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 3;
+        }
+        if (currentMap[i][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i+1][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+      }
+      else if (i == nextR-1 && j == nextC-1){  //bottom right corner
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 3;
+        }
+        if (currentMap[i][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i-1][j] == 'X' && isAlive == false){
+          countLive++;
+        }
+        if (currentMap[i-1][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+      }
+      else if (i == nextR-1){          //bottom row
+        isAlive = false;
+        if (currentMap[i][j-1] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i-1][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive++;
+        }
+        if (currentMap[i-1][j] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i][j+1] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i-1][j+1] == 'X' && isAlive == false){
+          countLive++;
+        }
+      }
+      else if (j == 0){                 //left column
+        isAlive = false;
         if (currentMap[i-1][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i-1][j+1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive++;
+        }
+        if (currentMap[i][j+1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i+1][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i+1][j+1] == 'X' && isAlive == false){
           countLive++;
         }
       }
-      if (i-1 >= 0 && j+1 < nextC){
-        if (currentMap[i-1][j+1] == 'X'){
+      else if (i == 0){                 //top row
+        isAlive = false;
+        if (currentMap[i][j-1] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i+1][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive++;
+        }
+        if (currentMap[i+1][j] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i][j+1] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i+1][j+1] == 'X' && isAlive == false){
           countLive++;
         }
       }
-      if (j-1 >= 0){
+      else if (j == nextC-1){           //right column
+        isAlive = false;
+        if (currentMap[i-1][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i-1][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive++;
+        }
+        if (currentMap[i][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+        isAlive = false;
+        if (currentMap[i+1][j] == 'X'){
+          isAlive = true;
+        }
+        if (isAlive){
+          countLive = countLive + 2;
+        }
+        if (currentMap[i+1][j-1] == 'X' && isAlive == false){
+          countLive++;
+        }
+      }
+      else{                            //all spaces inbetween
+        if (currentMap[i-1][j-1] == 'X'){
+          countLive++;
+        }
         if (currentMap[i][j-1] == 'X'){
           countLive++;
         }
-      }
-      if (j+1 < nextC){
-        if (currentMap[i][j+1] == 'X'){
+        if (currentMap[i-1][j] == 'X'){
           countLive++;
         }
-      }
-      if (i+1 < nextR && j-1 >= 0){
+        if (currentMap[i-1][j+1] == 'X'){
+          countLive++;
+        }
         if (currentMap[i+1][j-1] == 'X'){
           countLive++;
         }
-      }
-      if (i+1 < nextR){
+        if (currentMap[i+1][j+1] == 'X'){
+          countLive++;
+        }
+        if (currentMap[i][j+1] == 'X'){
+          countLive++;
+        }
         if (currentMap[i+1][j] == 'X'){
           countLive++;
         }
       }
-      if (i+1 < nextR && j+1 < nextC){
-        if (currentMap[i+1][j+1] == 'X'){
-          countLive++;
-        }
-      }
 
-      //Check for Mirror mode
-      if (i-1 < 0 && j-1 < 0){
-        if (currentMap[0][0] == 'X'){
-          countLive = countLive + 3;
-        }
-      }
-      if (i-1 < 0){
-        if (j-1 != -1 && j+1 != nextC){
-          if (currentMap[i][j] == 'X'){
-            countLive++;
-          }
-        }
-      }
-      if (j-1 < 0){
-        if (i-1 != -1 && i+1 != nextR){
-          if (currentMap[i][j] == 'X'){
-            countLive++;
-          }
-        }
-      }
-      if (j+1 == nextC){
-        if (i-1 != -1 && i+1 != nextR){
-          if (currentMap[i][j] == 'X'){
-            countLive++;
-          }
-        }
-      }
-      if (i+1 == nextR){
-        if (j-1 != -1 && j+1 != nextC){
-          if (currentMap[i][j] == 'X'){
-            countLive++;
-          }
-        }
-      }
-      if (i-1 < 0 && j+1 == nextC){
-        if (currentMap[0][nextC-1] == 'X'){
-          countLive = countLive + 3;
-        }
-      }
-      if (i+1 == nextR && j-1 < 0){
-        if (currentMap[nextR-1][0] == 'X'){
-          countLive = countLive + 3;
-        }
-      }
-      if (i+1 == nextR && j+1 == nextC){
-        if (currentMap[nextR-1][nextC-1] == 'X'){
-          countLive = countLive + 3;
-        }
-      }
-      //cout << i << "," << j << " " << countLive << endl;
        //Initialize Spot To -
       nextMap[i][j] = '-';
 
@@ -168,7 +305,7 @@ char** Mirror::getNextMap()
 //Method To Check If Environment Has Died
 void Mirror::deadEnvironment()
 {
-  if (totalAlive == 0){
+  if (totalAlive < 2){
     cout << "Looks like your cells have all died out. System exiting..." << endl;
     exit(0);
   }
