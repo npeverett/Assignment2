@@ -7,10 +7,12 @@
 
 using namespace std;
 
+//Empty Constructor
 Classic::Classic()
 {
 }
 
+//Destructor
 Classic::~Classic()
 {
   for (int i=0; i < BuildMap::getCurrentMapR(); ++i){
@@ -20,11 +22,15 @@ Classic::~Classic()
   cout << "Classic Destroyed" << endl;
 }
 
+//Method For Neighbor Checking in Classic Mode
 void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
 {
+  //Local Variables
   isStable = true;
   totalAlive = 0;
   stringstream strStream;
+
+  //Insantiate New Array
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
@@ -34,7 +40,7 @@ void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
   for (int i=0; i < nextR; ++i){
     for (int j=0; j < nextC; ++j){
       countLive = 0;
-      if (i == 0 && j == 0){
+      if (i == 0 && j == 0){            //bottom right corner
         if (currentMap[i][j+1] == 'X'){
           countLive++;
         }
@@ -45,7 +51,7 @@ void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
           countLive++;
         }
       }
-      else if (i == nextR-1 && j == 0){
+      else if (i == nextR-1 && j == 0){   //bottom left corner
         if (currentMap[i][j+1] == 'X'){
           countLive++;
         }
@@ -198,7 +204,7 @@ void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
       if (currentMap[i][j] != nextMap[i][j]){
         isStable = false;
       }
-      //cout << i << "," << j << " " << countLive << endl;
+
       //Printing New Generation
       cout << nextMap[i][j] << " ";
     }
@@ -207,11 +213,13 @@ void Classic::hasNeighbor(const int nextR, const int nextC, char** currentMap)
   cout << endl;
 }
 
+//Getter for Next Map
 char** Classic::getNextMap()
 {
   return nextMap;
 }
 
+//Method To Check If Map Cells Have Died Out
 void Classic::deadEnvironment()
 {
   if (totalAlive == 0){
@@ -220,6 +228,7 @@ void Classic::deadEnvironment()
   }
 }
 
+//Method To Check If Generation Has Stabilized
 void Classic::Stabilized()
 {
   if (isStable){
@@ -228,6 +237,7 @@ void Classic::Stabilized()
   }
 }
 
+//Method To Output Generation To File, Upon User Request
 void Classic::outputMap(bool output, string filename, const int nextR, const int nextC)
 {
   ofstream fout;

@@ -169,6 +169,7 @@ int main()
         }
       }
     }
+    //If User Chooses Mirror Mode
     else if (gameMode == 'M')
     {
       int row2 = bm.getCurrentMapR();

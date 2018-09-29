@@ -7,10 +7,12 @@
 
 using namespace std;
 
+//Empty Constructor
 Donut::Donut()
 {
 }
 
+//Destructor
 Donut::~Donut()
 {
   for (int i=0; i < BuildMap::getCurrentMapR(); ++i){
@@ -20,10 +22,14 @@ Donut::~Donut()
   cout << "Donut Destroyed" << endl;
 }
 
+//Method for Neighbor Checking In Donut Mode
 void Donut::donutNeighbors(const int nextR, const int nextC, char** currentMap)
 {
+  //Local Variables
   totalAlive = 0;
   isStable = true;
+
+  //Insantiate New Array
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
@@ -305,12 +311,13 @@ void Donut::donutNeighbors(const int nextR, const int nextC, char** currentMap)
   cout << endl;
 }
 
+//Getter For Next Map
 char** Donut::getNextMap()
 {
   return nextMap;
 }
 
-//Method to Check If All Cells Have Died
+//Method To Check If Map Cells Have Died Out
 void Donut::deadEnvironment()
 {
   if (totalAlive == 0){
@@ -319,7 +326,7 @@ void Donut::deadEnvironment()
   }
 }
 
-//Method to Print If Generations Have Stabilized
+//Method To Check If Generation Has Stabilized
 void Donut::Stabilized()
 {
   if (isStable){
@@ -328,7 +335,7 @@ void Donut::Stabilized()
   }
 }
 
-//Method To Print Generations To Output File
+//Method To Output Generation To File, Upon User Request
 void Donut::outputMap(bool output, string filename, const int nextR, const int nextC)
 {
   ofstream fout;

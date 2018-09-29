@@ -7,10 +7,12 @@
 
 using namespace std;
 
+//Empty Constructor
 Mirror::Mirror()
 {
 }
 
+//Destructor
 Mirror::~Mirror()
 {
   for (int i=0; i < BuildMap::getCurrentMapR(); ++i){
@@ -20,11 +22,15 @@ Mirror::~Mirror()
   cout << "Mirror Destroyed" << endl;
 }
 
+//Method for Neighbor Checking in Mirror Mode
 void Mirror::mirrorNeighbors(const int nextR, const int nextC, char** currentMap)
 {
+  //Local Variables
   totalAlive = 0;
   isStable = true;
-  bool isAlive = false;
+  bool isAlive = false;    //keeps track of whether to check reflected spot or not
+
+  //Insantiate New Array
   nextMap = new char*[nextR];
   for (int i=0; i < nextR; ++i)
   {
@@ -296,13 +302,13 @@ void Mirror::mirrorNeighbors(const int nextR, const int nextC, char** currentMap
   cout << endl;
 }
 
-//Getter For Map To Access For Next Generation
+//Getter For Next Map
 char** Mirror::getNextMap()
 {
   return nextMap;
 }
 
-//Method To Check If Environment Has Died
+//Method To Check If Map Cells Have Died Out
 void Mirror::deadEnvironment()
 {
   if (totalAlive < 2){
@@ -311,7 +317,7 @@ void Mirror::deadEnvironment()
   }
 }
 
-//Method to Print If Generations Have Stabilized
+//Method To Check If Generation Has Stabilized
 void Mirror::Stabilized()
 {
   if (isStable){
@@ -320,7 +326,7 @@ void Mirror::Stabilized()
   }
 }
 
-//Method To Print Generations To Output File
+//Method To Output Generation To File, Upon User Request
 void Mirror::outputMap(bool output, string filename, const int nextR, const int nextC)
 {
   ofstream fout;
